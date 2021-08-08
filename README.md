@@ -44,6 +44,7 @@
     + [Enabling services](#enabling-services)
     + [Install display server](#install-display-server)
     + [Install and enable GNOME](#install-and-enable-gnome)
+  * [Add other OS to GRUB](#add-other-os-to-grub)
   * [Reboot into installed Arch](#reboot-into-installed-arch)
   * [Additional step - configure GNOME](#additional-step---configure-gnome)
 
@@ -541,7 +542,7 @@ pacman -S gnome gnome-extra
 systemctl enable gdm.service
 ```
 
-## Add other OS to grub
+## Add other OS to GRUB
 
 If you have Windows, install:
 
