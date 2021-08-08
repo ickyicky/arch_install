@@ -253,7 +253,7 @@ Next, format partitions you created + Linux one.
 
 ### EFI Boot partition - if created
 
-use **fdisk -l** to get all partitions, select one with EFI type (in my case /dev/sda1) and format it:
+use ```fdisk -l``` to get all partitions, select one with EFI type (in my case /dev/sda1) and format it:
 
 ```sh
 mkfs.fat -F32 /dev/sda1
@@ -261,7 +261,7 @@ mkfs.fat -F32 /dev/sda1
 
 ### SWAP partition - if created
 
-use **fdisk -l** to get all partitions, select one with Linux swap type (in my case /dev/sdb1) and activate swap:
+use ```fdisk -l``` to get all partitions, select one with Linux swap type (in my case /dev/sdb1) and activate swap:
 
 ```sh
 mkswap /dev/sdb1
@@ -270,7 +270,7 @@ swapon /dev/sdb1
 
 ### Linux partition - format + mounting for install
 
-Identify Linux partition with **fdisk -l** and format it. In my case it is /dev/sdb2.
+Identify Linux partition with ```fdisk -l``` and format it. In my case it is /dev/sdb2.
 
 #### EXT4
 
@@ -434,11 +434,12 @@ Next, install essential packages with ```pacman -S``` command. The ones you need
 - ```bluez bluez-utils``` - bluetooth support
 - ```cups``` - printing support
 - ```tlp``` - laptop power management, only for laptops
+- ```openssh``` - ssh deamon
 
 In my case, i used the following command for BTRFS on Legacy boot mode installation (so everything without efibootmgr):
 
 ```sh
-pacman -S base-devel linux-headers networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools reflector git lsb-release xdg-utils xdg-user-dirs bluez bluez-utils cups grub grub-btrfs tlp
+pacman -S base-devel linux-headers networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools reflector git lsb-release xdg-utils xdg-user-dirs bluez bluez-utils cups grub grub-btrfs tlp openssh
 ```
 
 Just use defaults and install all the things you want.
@@ -514,6 +515,7 @@ systemctl enable NetworkManager
 systemctl enable bluetooth || echo "no bluetooth"
 systemctl enable cups.service || echo "no cups"
 systemctl enable tlp.service || echo "no tlp"
+systemctl enable sshd || echo "no ssh"
 ```
 
 ### Install display server
@@ -538,6 +540,22 @@ Love it or hate it, GNOME is the most complete Linux DE, together with KDE. For 
 pacman -S gnome gnome-extra
 systemctl enable gdm.service
 ```
+
+## Add other OS to grub
+
+If you have Windows, install:
+
+```sh
+pacman -S ntfs-3g
+```
+
+then run:
+
+```sh
+echo "GRUB_DISABLE_OS_PROBER=false" >> /etc/default/grub
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
 ## Reboot into installed Arch
 
 Exit chroot with ```exit``` and reboot machine (```reboot```). Congratulations, you have installed Arch with GNOME. Now check if it works and if now search through archwiki to solve all the problems :) In my case i forgot the bootable flag on */dev/sdb2*, easily fixable no operating system found error :)
