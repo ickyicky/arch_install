@@ -1,5 +1,52 @@
 # Arch installation with GRUB, GNOME and either ext4 or btrfs
 
+[![](https://github.com/ickyicky/arch_install/blob/main/result.png?raw=true)](https://github.com/ickyicky/arch_install)
+
+## Table of contents
+
+- [Arch installation with GRUB, GNOME and either ext4 or btrfs](#arch-installation-with-grub--gnome-and-either-ext4-or-btrfs)
+  * [Table of contents](#table-of-contents)
+  * [Making things easy](#making-things-easy)
+    + [Connecting to a wireless network](#connecting-to-a-wireless-network)
+    + [Getting your ip address](#getting-your-ip-address)
+  * [Preparing for installation](#preparing-for-installation)
+    + [Load keyboard layout](#load-keyboard-layout)
+    + [Verify boot mode](#verify-boot-mode)
+    + [Update the system clock](#update-the-system-clock)
+  * [Disk partitioning](#disk-partitioning)
+    + [Legacy boot mode](#legacy-boot-mode)
+    + [UEFI boot mode](#uefi-boot-mode)
+    + [Using fdisk](#using-fdisk)
+    + [Installing alongside Windows](#installing-alongside-windows)
+    + [Wiping disk](#wiping-disk)
+    + [Setting partition types and flags - Legacy boot mode](#setting-partition-types-and-flags---legacy-boot-mode)
+    + [Setting partition types and flags - UEFI boot mode](#setting-partition-types-and-flags---uefi-boot-mode)
+    + [Last step](#last-step)
+  * [Formating partitions](#formating-partitions)
+    + [EFI Boot partition - if created](#efi-boot-partition---if-created)
+    + [SWAP partition - if created](#swap-partition---if-created)
+    + [Linux partition - format + mounting for install](#linux-partition---format---mounting-for-install)
+      - [EXT4](#ext4)
+      - [BTRFS](#btrfs)
+  * [Installation!](#installation-)
+  * [Setting up installed system](#setting-up-installed-system)
+    + [Generate fstab](#generate-fstab)
+    + [chroot into install](#chroot-into-install)
+    + [Basic configuration](#basic-configuration)
+      - [Network configuration](#network-configuration)
+      - [Root password](#root-password)
+  * [Installing essential packages](#installing-essential-packages)
+    + [Adding btrfs module - btrfs only](#adding-btrfs-module---btrfs-only)
+    + [Installing GRUB Boot loader - Legacy boot mode](#installing-grub-boot-loader---legacy-boot-mode)
+    + [Installing GRUB Boot loader - UEFI boot mode](#installing-grub-boot-loader---uefi-boot-mode)
+  * [Additional config](#additional-config)
+    + [Creating user and enabling him to sudo](#creating-user-and-enabling-him-to-sudo)
+    + [Enabling services](#enabling-services)
+    + [Install display server](#install-display-server)
+    + [Install and enable GNOME](#install-and-enable-gnome)
+  * [Reboot into installed Arch](#reboot-into-installed-arch)
+  * [Additional step - configure GNOME](#additional-step---configure-gnome)
+
 ## Making things easy
 
 First of all, you want to dual boot and have windows already installed, shrink its partition. Next, burn Arch iso to and USB or CD and boot it. Disable safe boot in BIOS if enabled.
@@ -386,11 +433,12 @@ Next, install essential packages with ```pacman -S``` command. The ones you need
 - ```base-devel linux-headers networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools reflector git lsb-release xdg-utils xdg-user-dirs``` - all the essentials
 - ```bluez bluez-utils``` - bluetooth support
 - ```cups``` - printing support
+- ```tlp``` - laptop power management, only for laptops
 
 In my case, i used the following command for BTRFS on Legacy boot mode installation (so everything without efibootmgr):
 
 ```sh
-pacman -S base-devel linux-headers networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools reflector git lsb-release xdg-utils xdg-user-dirs bluez bluez-utils cups grub grub-btrfs
+pacman -S base-devel linux-headers networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools reflector git lsb-release xdg-utils xdg-user-dirs bluez bluez-utils cups grub grub-btrfs tlp
 ```
 
 Just use defaults and install all the things you want.
@@ -459,12 +507,13 @@ Then execute ```visudo``` and uncomment the following line:
 
 ### Enabling services
 
-Enable netowrking, bluetooth and CUPS services. Just paste the following:
+Enable netowrking, bluetooth, tlp and CUPS services. Just paste the following:
 
 ```sh
 systemctl enable NetworkManager
 systemctl enable bluetooth || echo "no bluetooth"
 systemctl enable cups.service || echo "no cups"
+systemctl enable tlp.service || echo "no tlp"
 ```
 
 ### Install display server
@@ -506,3 +555,9 @@ I provide additional config for GNOME myself. In order to install it:
 8. reopen terminal
 
 Now you are ready to post neofetch screenshot to r/uniporn
+
+You can additionally install pamac for GUI software installation:
+
+```sh
+yay -S pamac
+```
