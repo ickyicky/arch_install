@@ -305,6 +305,11 @@ Additionaly, create subvolumes. Good example is:
 
 ```sh
 PARTITION="/dev/sdb2"
+```
+
+and after choosing partition:
+
+```sh
 mount $PARTITION /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
@@ -411,10 +416,15 @@ echo KEYMAP=pl >> /etc/vconsole.conf
 
 #### Network configuration
 
-Select machine name and save it to /etc/hostname and generate /etc/hosts. Edit HOSTNAME_NEW value to desired value and execute:
+Select machine name and save it to /etc/hostname and generate /etc/hosts.
 
 ```sh
 HOSTNAME_NEW=ArchThinkpad
+```
+
+Edit HOSTNAME_NEW value to desired value and execute:
+
+```sh
 echo $HOSTNAME_NEW >> /etc/hostname
 echo "127.0.0.1       localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
@@ -491,15 +501,19 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ### Creating user and enabling him to sudo
 
-Create an user with specified username in wheel group (for sudo):
+Select desired username:
 
 ```sh
 MYUSERNAME=archmaster
+```
+where MYUSERNAME is your desired username of course.
+
+Create an user with specified username in wheel group (for sudo):
+
+```sh
 useradd -mG wheel $MYUSERNAME
 passwd $MYUSERNAME
 ```
-
-where MYUSERNAME is your desired username of course.
 
 Then execute ```visudo``` and uncomment the following line:
 
