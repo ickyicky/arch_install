@@ -49,7 +49,7 @@
 
 ## Making things easy
 
-First of all, you want to dual boot and have windows already installed, shrink its partition. Next, burn Arch iso to and USB or CD and boot it. Disable safe boot in BIOS if enabled.
+First of all, you want to dual boot and have windows already installed, shrink its partition. Next, burn Arch iso to an USB or CD and boot it. Disable safe boot in BIOS if enabled.
 
 To make things easy, it is good idea to perform the installation through ssh. This enables you to copy and paste commands which is really usefull :) I highly encourage to copy all commands i supplied to some editor, edit their arguments and then paste it to ssh session and execute. To enable this feature, first set up password for **root** account:
 
@@ -70,7 +70,7 @@ iwctl station list
 There should be device called **wlan0** or something simillar, that is the one we want to use to connect to the wifi. In next examples replace **wlan0** with your wireless network interface name. Next, scan avalibe networks using command:
 
 ```sh
-iwctl station wlan0 scane
+iwctl station wlan0 scan
 iwctl station wlan0 get-networks
 ```
 
